@@ -1,13 +1,9 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Edit Staff</title>
-</head>
-<body>
+<?= view('layouts/header', ['pageTitle' => 'Edit Staff']) ?>
+<div class="card">
 
 <h1>Edit Staff Account</h1>
 
-<a href="<?= site_url('staff') ?>">Back to Staff</a>
+<p><a href="<?= site_url('staff') ?>">← Back to Staff</a></p>
 
 <?php if (session()->getFlashdata('errors')): ?>
     <ul style="color: red;">
@@ -46,6 +42,12 @@
         placeholder="Leave blank to keep current password"
     >
 
+    <label>Role</label>
+    <select name="role" required>
+        <option value="staff" <?= old('role', $user['role']) === 'staff' ? 'selected' : '' ?>>Staff</option>
+        <option value="admin" <?= old('role', $user['role']) === 'admin' ? 'selected' : '' ?>>Admin</option>
+    </select>
+
     <br><br>
 
     <label>New Avatar</label><br>
@@ -54,11 +56,12 @@
         name="avatar"
         accept="image/png,image/jpeg"
     >
+    <label><input type="checkbox" name="delete_avatar" value="1" style="width:auto"> Delete current avatar</label>
 
     <br><br>
 
     <button type="submit">Update Staff</button>
 </form>
 
-</body>
-</html>
+</div>
+<?= view('layouts/footer') ?>

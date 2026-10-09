@@ -31,6 +31,7 @@ class UsersController extends BaseController
             'username' => 'required|min_length[3]|max_length[50]|is_unique[users.username]',
             'full_name' => 'required|max_length[100]',
             'password' => 'required|min_length[8]',
+            'role' => 'required|in_list[admin,staff]',
             'avatar' => 'permit_empty|is_image[avatar]|mime_in[avatar,image/jpg,image/jpeg,image/png]|max_size[avatar,2048]',
         ];
 
@@ -43,6 +44,7 @@ class UsersController extends BaseController
         $this->users->insert([
             'username'  => trim($this->request->getPost('username')),
             'full_name' => trim($this->request->getPost('full_name')),
+            'role'      => $this->request->getPost('role'),
             'password'  => password_hash($this->request->getPost('password'), PASSWORD_DEFAULT),
             'avatar'    => $avatar,
             'created_at' => date('Y-m-d H:i:s'),
@@ -63,6 +65,7 @@ class UsersController extends BaseController
         $rules = [
             'full_name' => 'required|max_length[100]',
             'password'  => 'permit_empty|min_length[8]',
+            'role'      => 'required|in_list[admin,staff]',
             'avatar'    => 'permit_empty|is_image[avatar]|mime_in[avatar,image/jpg,image/jpeg,image/png]|max_size[avatar,2048]',
         ];
 
@@ -72,8 +75,13 @@ class UsersController extends BaseController
 
         $user = $this->users->find($id);
 
+        if (! $user) {
+            throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
+        }
+
         $data = [
             'full_name' => trim($this->request->getPost('full_name')),
+            'role'      => $this->request->getPost('role'),
         ];
 
         $password = $this->request->getPost('password');
@@ -85,7 +93,11 @@ class UsersController extends BaseController
         $avatar = $this->uploadAvatar();
 
         if ($avatar) {
+            $this->deleteAvatarFile($user['avatar']);
             $data['avatar'] = $avatar;
+        } elseif ($this->request->getPost('delete_avatar') === '1') {
+            $this->deleteAvatarFile($user['avatar']);
+            $data['avatar'] = null;
         }
 
         $this->users->update($id, $data);
@@ -99,7 +111,9 @@ class UsersController extends BaseController
             return redirect()->to('/staff')->with('error', 'You cannot delete your own account.');
         }
 
+        $user = $this->users->find($id);
         $this->users->delete($id);
+        $this->deleteAvatarFile($user['avatar'] ?? null);
 
         return redirect()->to('/staff')->with('success', 'Staff account deleted.');
     }
@@ -122,5 +136,15 @@ class UsersController extends BaseController
         $file->move($directory, $newName);
 
         return $newName;
+    }
+
+    private function deleteAvatarFile(?string $fileName): void
+    {
+        if ($fileName) {
+            $path = FCPATH . 'uploads/avatars/' . basename($fileName);
+            if (is_file($path)) {
+                unlink($path);
+            }
+        }
     }
 }

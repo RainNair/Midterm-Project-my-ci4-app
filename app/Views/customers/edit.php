@@ -1,13 +1,9 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Edit Customer</title>
-</head>
-<body>
+<?= view('layouts/header', ['pageTitle' => 'Edit Customer']) ?>
+<div class="card">
 
 <h1>Edit Customer</h1>
 
-<a href="<?= site_url('customers') ?>">Back to Customers</a>
+<p><a href="<?= site_url('customers') ?>">← Back to Customers</a></p>
 
 <?php if (session()->getFlashdata('errors')): ?>
     <ul style="color: red;">
@@ -55,5 +51,5 @@
     <button type="submit">Update Customer</button>
 </form>
 
-</body>
-</html>
+</div>
+<?= view('layouts/footer') ?>

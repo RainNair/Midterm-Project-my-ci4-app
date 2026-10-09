@@ -1,15 +1,9 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Customers</title>
-</head>
-<body>
+<?= view('layouts/header', ['pageTitle' => 'Customers']) ?>
+<div class="card">
 
 <h1>Customer Management</h1>
 
-<a href="<?= site_url('dashboard') ?>">Dashboard</a> |
-<a href="<?= site_url('customers/create') ?>">Add Customer</a> |
-<a href="<?= site_url('logout') ?>">Logout</a>
+<p><a class="button" href="<?= site_url('customers/create') ?>">Add Customer</a></p>
 
 <?php if (session()->getFlashdata('success')): ?>
     <p style="color: green;">
@@ -31,9 +25,9 @@
             <td><?= esc($customer['id']) ?></td>
             <td><?= esc($customer['full_name']) ?></td>
             <td><?= esc($customer['email']) ?></td>
-            <td><?= esc($customer['phone']) ?></td>
+            <td><?= esc($customer['phone'] ?: '—') ?></td>
             <td>
-                <a href="<?= site_url('customers/edit/' . $customer['id']) ?>">
+                <?php if (session()->get('role') === 'admin'): ?><a class="button" href="<?= site_url('customers/edit/' . $customer['id']) ?>">
                     Edit
                 </a>
 
@@ -44,12 +38,13 @@
                     onsubmit="return confirm('Delete this customer?')"
                 >
                     <?= csrf_field() ?>
-                    <button type="submit">Delete</button>
+                    <button class="danger" type="submit">Delete</button>
                 </form>
+                <?php endif; ?>
             </td>
         </tr>
     <?php endforeach; ?>
 </table>
 
-</body>
-</html>
+</div>
+<?= view('layouts/footer') ?>

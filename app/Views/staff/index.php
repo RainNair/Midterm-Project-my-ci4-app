@@ -1,15 +1,9 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Staff Management</title>
-</head>
-<body>
+<?= view('layouts/header', ['pageTitle' => 'Staff Management']) ?>
+<div class="card">
 
 <h1>Staff Management</h1>
 
-<a href="<?= site_url('dashboard') ?>">Dashboard</a> |
-<a href="<?= site_url('staff/create') ?>">Add Staff</a> |
-<a href="<?= site_url('logout') ?>">Logout</a>
+<p><a class="button" href="<?= site_url('staff/create') ?>">Add Staff</a></p>
 
 <?php if (session()->getFlashdata('success')): ?>
     <p style="color: green;">
@@ -28,6 +22,7 @@
         <th>Avatar</th>
         <th>Username</th>
         <th>Full Name</th>
+        <th>Role</th>
         <th>Actions</th>
     </tr>
 
@@ -48,6 +43,7 @@
 
             <td><?= esc($user['username']) ?></td>
             <td><?= esc($user['full_name']) ?></td>
+            <td><span class="role-badge"><?= esc($user['role']) ?></span></td>
 
             <td>
                 <a href="<?= site_url('staff/edit/' . $user['id']) ?>">
@@ -68,5 +64,5 @@
     <?php endforeach; ?>
 </table>
 
-</body>
-</html>
+</div>
+<?= view('layouts/footer') ?>

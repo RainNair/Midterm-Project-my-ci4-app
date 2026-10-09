@@ -55,11 +55,15 @@ $routes->group('', ['filter' => 'auth'], static function ($routes) {
     |--------------------------------------------------------------------------
     */
     $routes->get('products', 'ProductsController::index');
-    $routes->get('products/create', 'ProductsController::createForm');
-    $routes->post('products/create', 'ProductsController::create');
-    $routes->get('products/edit/(:num)', 'ProductsController::edit/$1');
-    $routes->post('products/update/(:num)', 'ProductsController::update/$1');
-    $routes->post('products/delete/(:num)', 'ProductsController::delete/$1');
+    $routes->group('products', ['filter' => 'role:admin,staff'], static function ($routes) {
+        $routes->get('create', 'ProductsController::createForm');
+        $routes->post('create', 'ProductsController::create');
+        $routes->get('edit/(:num)', 'ProductsController::edit/$1');
+        $routes->post('update/(:num)', 'ProductsController::update/$1');
+    });
+    $routes->group('products', ['filter' => 'role:admin'], static function ($routes) {
+        $routes->post('delete/(:num)', 'ProductsController::delete/$1');
+    });
 
     /*
     |--------------------------------------------------------------------------
@@ -67,23 +71,29 @@ $routes->group('', ['filter' => 'auth'], static function ($routes) {
     |--------------------------------------------------------------------------
     */
     $routes->get('customers', 'CustomersController::index');
-    $routes->get('customers/create', 'CustomersController::createForm');
-    $routes->post('customers/create', 'CustomersController::create');
-    $routes->get('customers/edit/(:num)', 'CustomersController::edit/$1');
-    $routes->post('customers/update/(:num)', 'CustomersController::update/$1');
-    $routes->post('customers/delete/(:num)', 'CustomersController::delete/$1');
+    $routes->group('customers', ['filter' => 'role:admin,staff'], static function ($routes) {
+        $routes->get('create', 'CustomersController::createForm');
+        $routes->post('create', 'CustomersController::create');
+    });
+    $routes->group('customers', ['filter' => 'role:admin'], static function ($routes) {
+        $routes->get('edit/(:num)', 'CustomersController::edit/$1');
+        $routes->post('update/(:num)', 'CustomersController::update/$1');
+        $routes->post('delete/(:num)', 'CustomersController::delete/$1');
+    });
 
     /*
     |--------------------------------------------------------------------------
     | Staff management
     |--------------------------------------------------------------------------
     */
-    $routes->get('staff', 'UsersController::index');
-    $routes->get('staff/create', 'UsersController::createForm');
-    $routes->post('staff/create', 'UsersController::create');
-    $routes->get('staff/edit/(:num)', 'UsersController::edit/$1');
-    $routes->post('staff/update/(:num)', 'UsersController::update/$1');
-    $routes->post('staff/delete/(:num)', 'UsersController::delete/$1');
+    $routes->group('staff', ['filter' => 'role:admin'], static function ($routes) {
+        $routes->get('/', 'UsersController::index');
+        $routes->get('create', 'UsersController::createForm');
+        $routes->post('create', 'UsersController::create');
+        $routes->get('edit/(:num)', 'UsersController::edit/$1');
+        $routes->post('update/(:num)', 'UsersController::update/$1');
+        $routes->post('delete/(:num)', 'UsersController::delete/$1');
+    });
 
     /*
     |--------------------------------------------------------------------------

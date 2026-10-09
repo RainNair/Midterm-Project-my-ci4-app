@@ -8,6 +8,10 @@ class AuthController extends BaseController
 {
     public function login()
     {
+        if (session()->get('logged_in')) {
+            return redirect()->to(site_url('dashboard'));
+        }
+
         return view('auth/login');
     }
 
@@ -40,15 +44,21 @@ class AuthController extends BaseController
 
         session()->regenerate(true);
 
+        $role = in_array($user['role'] ?? 'staff', ['admin', 'staff'], true)
+            ? $user['role']
+            : 'staff';
+
         session()->set([
             'user_id'   => $user['id'],
             'username'  => $user['username'],
             'full_name' => $user['full_name'],
             'avatar'    => $user['avatar'],
+            'role'      => $role,
             'logged_in' => true,
         ]);
 
-        return redirect()->to(site_url('dashboard'));
+        return redirect()->to(site_url('dashboard'))
+            ->with('success', ucfirst($role) . ' account logged in successfully.');
     }
 
     public function logout()

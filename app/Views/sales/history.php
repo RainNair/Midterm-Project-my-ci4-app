@@ -1,15 +1,9 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Sales History</title>
-</head>
-<body>
+<?= view('layouts/header', ['pageTitle' => 'Sales History']) ?>
+<div class="card">
 
 <h1>Sales History</h1>
 
-<a href="<?= site_url('dashboard') ?>">Dashboard</a> |
-<a href="<?= site_url('sales/create') ?>">Record Sale</a> |
-<a href="<?= site_url('logout') ?>">Logout</a>
+<p><a class="button" href="<?= site_url('sales/create') ?>">Record Sale</a></p>
 
 <?php if (session()->getFlashdata('success')): ?>
     <p style="color: green;">
@@ -39,9 +33,7 @@
             <td><?= esc($sale['id']) ?></td>
             <td><?= esc($sale['product_name']) ?></td>
             <td>
-                <?= $sale['customer_name']
-                    ? esc($sale['customer_name'])
-                    : 'Walk-in Customer' ?>
+                <?= esc($sale['customer_name'] ?: 'Walk-in Customer') ?>
             </td>
             <td><?= esc($sale['staff_name']) ?></td>
             <td><?= esc($sale['quantity']) ?></td>
@@ -51,5 +43,5 @@
     <?php endforeach; ?>
 </table>
 
-</body>
-</html>
+</div>
+<?= view('layouts/footer') ?>

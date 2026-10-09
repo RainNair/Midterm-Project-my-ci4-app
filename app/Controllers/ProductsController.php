@@ -98,7 +98,14 @@ class ProductsController extends BaseController
         $file = $this->request->getFile('image');
 
         if ($file && $file->isValid() && ! $file->hasMoved()) {
-            $imageName = $this->uploadImage('image', 'products');
+            $newImageName = $this->uploadImage('image', 'products');
+            if ($newImageName) {
+                $imageName = $newImageName;
+                $this->deleteImageFile($product['image'], 'products');
+            }
+        } elseif ($this->request->getPost('delete_image') === '1') {
+            $imageName = null;
+            $this->deleteImageFile($product['image'], 'products');
         }
 
         $this->products->update($id, [
@@ -122,6 +129,7 @@ class ProductsController extends BaseController
         }
 
         $this->products->delete($id);
+        $this->deleteImageFile($product['image'], 'products');
 
         return redirect()
             ->to(site_url('products'))
@@ -146,5 +154,15 @@ class ProductsController extends BaseController
         $file->move($directory, $newName);
 
         return $newName;
+    }
+
+    private function deleteImageFile(?string $fileName, string $folder): void
+    {
+        if ($fileName) {
+            $path = FCPATH . 'uploads/' . $folder . '/' . basename($fileName);
+            if (is_file($path)) {
+                unlink($path);
+            }
+        }
     }
 }

@@ -1,24 +1,9 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Products</title>
-</head>
-<body>
+<?= view('layouts/header', ['pageTitle' => 'Products']) ?>
+<div class="card">
 
 <h1>Products</h1>
 
-<a href="<?= site_url('dashboard') ?>">Dashboard</a> |
-<a href="<?= site_url('products/create') ?>">Add Product</a> |
-<a href="<?= site_url('logout') ?>">Logout</a>
-
-<hr>
-
-<?php if (session()->getFlashdata('success')): ?>
-    <p style="color: green;">
-        <?= esc(session()->getFlashdata('success')) ?>
-    </p>
-<?php endif; ?>
+<p><a class="button" href="<?= site_url('products/create') ?>">Add Product</a></p>
 
 <table border="1" cellpadding="8">
     <tr>
@@ -48,25 +33,25 @@
                 <?php endif; ?>
             </td>
             <td>
-                <a href="<?= site_url('products/edit/' . $product['id']) ?>">
-                    Edit
-                </a>
+                <a class="button" href="<?= site_url('products/edit/' . $product['id']) ?>">Edit</a>
 
+                <?php if (session()->get('role') === 'admin'): ?>
                 <form
                     action="<?= site_url('products/delete/' . $product['id']) ?>"
                     method="post"
                     style="display: inline;"
                 >
                     <?= csrf_field() ?>
-                    <button type="submit"
+                    <button class="danger" type="submit"
                             onclick="return confirm('Delete this product?')">
                         Delete
                     </button>
                 </form>
+                <?php endif; ?>
             </td>
         </tr>
     <?php endforeach; ?>
 </table>
 
-</body>
-</html>
+</div>
+<?= view('layouts/footer') ?>

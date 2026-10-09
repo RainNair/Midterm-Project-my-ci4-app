@@ -1,21 +1,7 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Record Sale</title>
-</head>
-<body>
+<?= view('layouts/header', ['pageTitle' => 'Record Sale']) ?>
+<div class="card">
 
 <h1>Record Sale</h1>
-
-<a href="<?= site_url('dashboard') ?>">Dashboard</a> |
-<a href="<?= site_url('sales/history') ?>">Sales History</a> |
-<a href="<?= site_url('logout') ?>">Logout</a>
-
-<?php if (session()->getFlashdata('error')): ?>
-    <p style="color: red;">
-        <?= esc(session()->getFlashdata('error')) ?>
-    </p>
-<?php endif; ?>
 
 <?php if (session()->getFlashdata('errors')): ?>
     <ul style="color: red;">
@@ -50,7 +36,7 @@
     <label>Customer</label><br>
 
     <select name="customer_id">
-        <option value="">Walk-in Customer</option>
+        <option value="<?= esc($walkInCustomer['id']) ?>" <?= old('customer_id', $walkInCustomer['id']) == $walkInCustomer['id'] ? 'selected' : '' ?>>Walk-in Customer</option>
 
         <?php foreach ($customers as $customer): ?>
             <option
@@ -78,5 +64,5 @@
     <button type="submit">Record Sale</button>
 </form>
 
-</body>
-</html>
+</div>
+<?= view('layouts/footer') ?>

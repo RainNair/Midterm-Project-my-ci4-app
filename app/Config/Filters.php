@@ -3,6 +3,7 @@
 namespace Config;
 
 use App\Filters\AuthFilter;
+use App\Filters\RoleFilter;
 use CodeIgniter\Config\Filters as BaseFilters;
 use CodeIgniter\Filters\CSRF;
 use CodeIgniter\Filters\DebugToolbar;
@@ -19,6 +20,7 @@ class Filters extends BaseFilters
         'invalidchars' => InvalidChars::class,
         'secureheaders'=> SecureHeaders::class,
         'auth'         => AuthFilter::class,
+        'role'         => RoleFilter::class,
     ];
 
     public array $required = [

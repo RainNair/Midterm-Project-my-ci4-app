@@ -26,9 +26,12 @@ class SalesController extends BaseController
 
     public function create()
     {
+        $walkInCustomer = $this->walkInCustomer();
+
         return view('sales/create', [
             'products'  => $this->products->where('stock_quantity >', 0)->findAll(),
-            'customers' => $this->customers->orderBy('full_name')->findAll(),
+            'customers' => $this->customers->where('email !=', 'walkin@local.invalid')->orderBy('full_name')->findAll(),
+            'walkInCustomer' => $walkInCustomer,
         ]);
     }
 
@@ -46,18 +49,22 @@ class SalesController extends BaseController
 
         $productId = (int) $this->request->getPost('product_id');
         $quantity  = (int) $this->request->getPost('quantity');
-        $customerId = $this->request->getPost('customer_id') ?: null;
+        $customerId = (int) $this->request->getPost('customer_id');
+        if ($customerId < 1) {
+            $customerId = (int) $this->walkInCustomer()['id'];
+        }
 
-        $this->sales->transBegin();
+        $db = db_connect();
+        $db->transBegin();
 
         // Lock the product row while checking and updating stock.
-        $product = $this->sales->query(
+        $product = $db->query(
             'SELECT * FROM products WHERE id = ? FOR UPDATE',
             [$productId]
         )->getRowArray();
 
         if (! $product) {
-            $this->sales->transRollback();
+            $db->transRollback();
 
             return redirect()->back()
                 ->withInput()
@@ -65,7 +72,7 @@ class SalesController extends BaseController
         }
 
         if ($quantity > (int) $product['stock_quantity']) {
-            $this->sales->transRollback();
+            $db->transRollback();
 
             return redirect()->back()
                 ->withInput()
@@ -77,7 +84,7 @@ class SalesController extends BaseController
 
         $totalPrice = (float) $product['price'] * $quantity;
 
-        $this->sales->insert([
+        $db->table('sales')->insert([
             'product_id'  => $productId,
             'customer_id' => $customerId,
             'sold_by'     => session()->get('user_id'),
@@ -86,19 +93,19 @@ class SalesController extends BaseController
             'created_at'  => date('Y-m-d H:i:s'),
         ]);
 
-        $this->products->update($productId, [
+        $db->table('products')->where('id', $productId)->update([
             'stock_quantity' => (int) $product['stock_quantity'] - $quantity,
         ]);
 
-        if (! $this->sales->transStatus()) {
-            $this->sales->transRollback();
+        if (! $db->transStatus()) {
+            $db->transRollback();
 
             return redirect()->back()
                 ->withInput()
                 ->with('error', 'The sale could not be recorded.');
         }
 
-        $this->sales->transCommit();
+        $db->transCommit();
 
         return redirect()->to('/sales/history')
             ->with('success', 'Sale recorded successfully.');
@@ -109,5 +116,22 @@ class SalesController extends BaseController
         return view('sales/history', [
             'sales' => $this->sales->history()->findAll(),
         ]);
+    }
+
+    private function walkInCustomer(): array
+    {
+        $customer = $this->customers->where('email', 'walkin@local.invalid')->first();
+
+        if (! $customer) {
+            $id = $this->customers->insert([
+                'full_name' => 'Walk-In Customer',
+                'email' => 'walkin@local.invalid',
+                'phone' => '',
+                'created_at' => date('Y-m-d H:i:s'),
+            ], true);
+            $customer = $this->customers->find($id);
+        }
+
+        return $customer;
     }
 }

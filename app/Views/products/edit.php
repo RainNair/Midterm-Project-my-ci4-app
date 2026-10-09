@@ -1,17 +1,9 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Edit Product</title>
-</head>
-<body>
+<?= view('layouts/header', ['pageTitle' => 'Edit Product']) ?>
+<div class="card">
 
 <h1>Edit Product</h1>
 
-<a href="<?= site_url('products') ?>">Back to Products</a>
-
-<hr>
+<p><a href="<?= site_url('products') ?>">← Back to Products</a></p>
 
 <?php if (session()->getFlashdata('errors')): ?>
     <ul style="color: red;">
@@ -36,6 +28,7 @@
         value="<?= esc(old('name', $product['name'])) ?>"
         required
     >
+    <label><input type="checkbox" name="delete_image" value="1" style="width:auto"> Delete current image</label>
 
     <br><br>
 
@@ -87,5 +80,5 @@
     <button type="submit">Update Product</button>
 </form>
 
-</body>
-</html>
+</div>
+<?= view('layouts/footer') ?>

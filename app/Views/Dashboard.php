@@ -1,32 +1,21 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Dashboard</title>
-</head>
-<body>
+<?= view('layouts/header', ['pageTitle' => 'Dashboard']) ?>
+<div class="card">
 
-    <h1>Admin Dashboard</h1>
+    <h1><?= $isAdmin ? 'Admin Dashboard' : 'Staff Dashboard' ?></h1>
 
     <p>
         Welcome,
         <?= esc(session()->get('full_name')) ?>!
     </p>
 
-    <nav>
-        <a href="<?= site_url('dashboard') ?>">Dashboard</a> |
-        <a href="<?= site_url('products') ?>">Products</a> |
-        <a href="<?= site_url('customers') ?>">Customers</a> |
-        <a href="<?= site_url('sales') ?>">Sales History</a> |
-        <a href="<?= site_url('staff') ?>">Staff</a> |
-        <a href="<?= site_url('logout') ?>">Logout</a>
-    </nav>
+    <h2>Welcome to the POS Panel</h2>
+    <p>Your account was identified as <strong><?= esc(ucfirst($role)) ?></strong>. The navigation and server permissions are based on this role.</p>
 
-    <hr>
+    <?php if ($isAdmin): ?>
+        <p>As an admin, you can manage products, customers, staff accounts, and sales.</p>
+    <?php else: ?>
+        <p>As staff, you can view products and customers, record sales, and review sales history.</p>
+    <?php endif; ?>
 
-    <h2>Welcome to the Admin Panel</h2>
-    <p>Use the navigation links above to manage the system.</p>
-
-</body>
-</html>
+</div>
+<?= view('layouts/footer') ?>

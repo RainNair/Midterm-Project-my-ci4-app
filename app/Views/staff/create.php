@@ -1,13 +1,9 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Add Staff</title>
-</head>
-<body>
+<?= view('layouts/header', ['pageTitle' => 'Add Staff']) ?>
+<div class="card">
 
 <h1>Add Staff Account</h1>
 
-<a href="<?= site_url('staff') ?>">Back to Staff</a>
+<p><a href="<?= site_url('staff') ?>">← Back to Staff</a></p>
 
 <?php if (session()->getFlashdata('errors')): ?>
     <ul style="color: red;">
@@ -47,6 +43,12 @@
     <label>Password</label><br>
     <input type="password" name="password" required>
 
+    <label>Role</label>
+    <select name="role" required>
+        <option value="staff" <?= old('role', 'staff') === 'staff' ? 'selected' : '' ?>>Staff</option>
+        <option value="admin" <?= old('role') === 'admin' ? 'selected' : '' ?>>Admin</option>
+    </select>
+
     <br><br>
 
     <label>Avatar</label><br>
@@ -61,5 +63,5 @@
     <button type="submit">Create Staff</button>
 </form>
 
-</body>
-</html>
+</div>
+<?= view('layouts/footer') ?>

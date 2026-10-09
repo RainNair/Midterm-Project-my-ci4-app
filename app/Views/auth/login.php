@@ -1,12 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Staff Login</title>
-</head>
-<body>
+<?= view('layouts/header', ['pageTitle' => 'Login']) ?>
+<div class="card">
 
-<h1>Staff Login</h1>
+<h1>Account Login</h1>
+<p class="muted">Use your account credentials. The system will automatically identify whether you are an admin or staff member after login.</p>
 
 <?php if (session()->getFlashdata('error')): ?>
     <p style="color: red;">
@@ -55,5 +51,5 @@
     <button type="submit">Login</button>
 </form>
 
-</body>
-</html>
+</div>
+<?= view('layouts/footer') ?>

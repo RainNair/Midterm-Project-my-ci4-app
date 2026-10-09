@@ -1,20 +1,12 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Add Product</title>
-</head>
-<body>
+<?= view('layouts/header', ['pageTitle' => 'Add Product']) ?>
+<div class="card">
 
 <h1>Add Product</h1>
 
-<a href="<?= site_url('products') ?>">Back to Products</a>
-
-<hr>
+<p><a href="<?= site_url('products') ?>">← Back to Products</a></p>
 
 <?php if (session()->getFlashdata('errors')): ?>
-    <ul style="color: red;">
+    <ul class="error">
         <?php foreach (session()->getFlashdata('errors') as $error): ?>
             <li><?= esc($error) ?></li>
         <?php endforeach; ?>
@@ -77,5 +69,5 @@
     <button type="submit">Save Product</button>
 </form>
 
-</body>
-</html>
+</div>
+<?= view('layouts/footer') ?>
