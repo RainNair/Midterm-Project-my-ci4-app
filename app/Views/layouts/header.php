@@ -6,17 +6,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?= esc($pageTitle) ?> | POS System</title>
     <style>
-        :root { --navy:#172554; --blue:#2563eb; --bg:#f1f5f9; --card:#fff; --text:#1e293b; --muted:#64748b; --danger:#dc2626; }
+        :root { --red:#A14646; --dark-red:#741F1F; --bg:#A14646; --card:#fff; --text:#4A1717; --muted:#7F3B3B; --danger:#8B1E1E; }
         * { box-sizing:border-box; } body { margin:0; background:var(--bg); color:var(--text); font:15px/1.5 Arial,sans-serif; }
-        .topbar { background:var(--navy); color:white; padding:16px 5%; display:flex; justify-content:space-between; align-items:center; gap:20px; flex-wrap:wrap; }
+        .topbar { background:var(--dark-red); color:white; padding:16px 5%; display:flex; justify-content:space-between; align-items:center; gap:20px; flex-wrap:wrap; }
         .brand { color:white; font-weight:bold; font-size:20px; text-decoration:none; } .topbar nav { display:flex; gap:12px; flex-wrap:wrap; align-items:center; }
-        .topbar nav a { color:#dbeafe; text-decoration:none; padding:6px 9px; border-radius:6px; } .topbar nav a:hover { background:#1e40af; }
-        .role-badge { background:#fbbf24; color:#422006; border-radius:999px; padding:3px 9px; font-size:12px; font-weight:bold; text-transform:uppercase; }
-        main { width:min(1100px,92%); margin:30px auto; } .card { background:var(--card); border-radius:12px; padding:24px; box-shadow:0 4px 18px #0f172a12; }
-        h1 { margin-top:0; color:var(--navy); } h2 { color:var(--navy); } a { color:var(--blue); } label { display:block; font-weight:bold; margin:12px 0 5px; }
-        input,select { width:100%; max-width:520px; padding:10px; border:1px solid #cbd5e1; border-radius:6px; background:white; } button,.button { background:var(--blue); color:#fff; border:0; border-radius:6px; padding:10px 15px; cursor:pointer; text-decoration:none; display:inline-block; }
-        button.danger,.danger { background:var(--danger); } .actions { display:flex; gap:8px; align-items:center; flex-wrap:wrap; } table { width:100%; border-collapse:collapse; background:white; } th,td { padding:11px; border-bottom:1px solid #e2e8f0; text-align:left; vertical-align:middle; } th { background:#e0e7ff; color:var(--navy); }
-        .notice { padding:12px 15px; border-radius:7px; margin-bottom:18px; } .success { background:#dcfce7; color:#166534; } .error { background:#fee2e2; color:#991b1b; } .muted { color:var(--muted); }
+        .topbar nav a { color:#fff; text-decoration:none; padding:6px 9px; border-radius:6px; } .topbar nav a:hover { background:var(--red); }
+        .role-badge { background:#fff; color:var(--dark-red); border-radius:999px; padding:3px 9px; font-size:12px; font-weight:bold; text-transform:uppercase; }
+        main { width:min(1100px,92%); margin:30px auto; } .card { background:var(--card); border-radius:12px; padding:24px; box-shadow:0 4px 18px #4A171733; }
+        h1 { margin-top:0; color:var(--dark-red); } h2 { color:var(--dark-red); } a { color:var(--red); } label { display:block; font-weight:bold; margin:12px 0 5px; }
+        input,select { width:100%; max-width:520px; padding:10px; border:1px solid var(--red); border-radius:6px; background:white; } button,.button { background:var(--red); color:#fff; border:0; border-radius:6px; padding:10px 15px; cursor:pointer; text-decoration:none; display:inline-block; }
+        button:hover,.button:hover { background:var(--dark-red); } button.danger,.danger { background:var(--danger); } .actions { display:flex; gap:8px; align-items:center; flex-wrap:wrap; } table { width:100%; border-collapse:collapse; background:white; } th,td { padding:11px; border-bottom:1px solid #E8BABA; text-align:left; vertical-align:middle; } th { background:#F5DADA; color:var(--dark-red); }
+        .notice { padding:12px 15px; border-radius:7px; margin-bottom:18px; } .success { background:#F5DADA; color:var(--dark-red); } .error { background:#F5DADA; color:var(--dark-red); } .muted { color:var(--muted); }
         footer { color:var(--muted); text-align:center; padding:20px; font-size:13px; } img.thumb { object-fit:cover; border-radius:6px; }
     </style>
 </head>

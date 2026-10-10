@@ -103,5 +103,8 @@ $routes->group('', ['filter' => 'auth'], static function ($routes) {
     $routes->get('sales', 'SalesController::history');
     $routes->get('sales/create', 'SalesController::create');
     $routes->post('sales/store', 'SalesController::store');
+    $routes->get('sales/edit/(:num)', 'SalesController::edit/$1');
+    $routes->post('sales/update/(:num)', 'SalesController::update/$1');
+    $routes->get('sales/receipt/(:segment)', 'SalesController::receipt/$1');
     $routes->get('sales/history', 'SalesController::history');
 });

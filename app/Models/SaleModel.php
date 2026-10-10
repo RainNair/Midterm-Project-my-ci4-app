@@ -16,6 +16,7 @@ class SaleModel extends Model
         'sold_by',
         'quantity',
         'total_price',
+        'receipt_number',
         'created_at',
     ];
 
